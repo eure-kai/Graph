@@ -3,8 +3,13 @@ import java.util.*;
 public class WeightedGraph<T, W> implements Network<T, W> {   
   private HashMap<T, HashMap<T, W>> map = new HashMap<>(); 
   private int numEdges = 0;
+  private boolean directed = false;
   
-   
+  public WeightedGraph(boolean d) {
+    directed = d;
+  }
+
+
   public int getVertexCount() {
     return map.size();
   }
@@ -16,7 +21,6 @@ public class WeightedGraph<T, W> implements Network<T, W> {
   public HashMap<T, W> getEdges(T vertex) {
     return map.get(vertex);
   }
-  
   
   public boolean hasVertex(T vertex) {
     return (map.containsKey(vertex));
@@ -32,7 +36,6 @@ public class WeightedGraph<T, W> implements Network<T, W> {
   }
   
   
-  
   public void addEdge(T source, T destination) {
     addEdge(source, destination, null);
   }
@@ -44,6 +47,7 @@ public class WeightedGraph<T, W> implements Network<T, W> {
     if (!hasVertex(destination)) addVertex(destination);
     
     map.get(source).put(destination, weight);
+    if (this.directed) map.get(destination).put(source, weight);
     numEdges++;
   }
   
@@ -52,11 +56,12 @@ public class WeightedGraph<T, W> implements Network<T, W> {
     
     String word = "";
     
+    if (this.directed) word += "This graph is directed.\n\n";
+    
     for (T vertex: map.keySet()) {
       word += (vertex + ": ");
       
       for (T vert: map.get(vertex).keySet()) {
-        // length of edge will be in parentheses
         word += (vert + "(" + map.get(vertex).get(vert) + "), ");
       }
       
