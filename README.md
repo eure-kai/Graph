@@ -1,2 +1,2 @@
 # Graph
-Directed and Weighted Graph implementation in Java (October 2021)
+Directed and Weighted Graph implementation in Java
